@@ -17,7 +17,9 @@ interface useTableProps<P> {
 
   removeApi?: (id: string) => Promise<any>;
 
-  changeStatusApi?: (id: string) => Promise<any>;
+  activeApi?: (id: string) => Promise<any>;
+
+  inActiveApi?: (id: string) => Promise<any>;
 
   initialFilters?: Partial<P>;
 }
@@ -25,7 +27,8 @@ interface useTableProps<P> {
 const useTable = <T, P>({
   fetchApi,
   removeApi,
-  changeStatusApi,
+  activeApi,
+  inActiveApi,
   initialFilters = {},
 }: useTableProps<P>) => {
   const { showNotification } = useNotification();
@@ -126,23 +129,37 @@ const useTable = <T, P>({
     }
   };
 
-  const handleChangeStatus = async (id: string) => {
-    if (!changeStatusApi) return;
+  const handleActive = async (id: string) => {
+    if (!activeApi) return;
 
     try {
-      const res = await changeStatusApi(id);
+      const res = await activeApi(id);
 
-      showNotification(
-        'success',
-        'Cập nhật trạng thái',
-        res.message || 'Cập nhật trạng thái thành công',
-      );
+      showNotification('success', 'Chuyển trạng thái', res.message || 'Kích hoạt thành công');
 
       fetchData();
     } catch (error: any) {
       showNotification(
         'error',
-        'Cập nhật trạng thái',
+        'Chuyển trạng thái',
+        error?.response?.data?.message || 'Đã có lỗi xảy ra',
+      );
+    }
+  };
+
+  const handleInActive = async (id: string) => {
+    if (!inActiveApi) return;
+
+    try {
+      const res = await inActiveApi(id);
+
+      showNotification('success', 'Chuyển trạng thái', res.message || 'Ngưng hoạt động thành công');
+
+      fetchData();
+    } catch (error: any) {
+      showNotification(
+        'error',
+        'Chuyển trạng thái',
         error?.response?.data?.message || 'Đã có lỗi xảy ra',
       );
     }
@@ -173,7 +190,9 @@ const useTable = <T, P>({
 
     handleDelete,
 
-    handleChangeStatus,
+    handleActive,
+
+    handleInActive,
 
     refetch: fetchData,
   };

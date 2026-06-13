@@ -1,48 +1,144 @@
-import { Image, Layout, Menu } from 'antd';
+import { Image, Layout, Menu, type MenuProps } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { DashboardOutlined, UserOutlined, BookOutlined } from '@ant-design/icons';
+import {
+  DashboardOutlined,
+  TeamOutlined,
+  SolutionOutlined,
+  UserOutlined,
+  BookOutlined,
+  AuditOutlined,
+  ReadOutlined,
+  WalletOutlined,
+  ScheduleOutlined,
+  CalendarOutlined,
+} from '@ant-design/icons';
 import YoeduLogo from '@/assets/images/yoedu-logo.svg';
 import { useTheme } from '@/app/providers/theme/hooks/useTheme';
 
+import { USER_ROLE, type UserRole } from '@/features/users/types/user-role-type';
+import { useAppSelector } from '@/app/redux/hooks';
+
 const { Sider } = Layout;
+
+type MenuItem = Required<MenuProps>['items'][number] & {
+  roles?: UserRole[];
+  children?: MenuItem[];
+};
 
 interface AppSidebarProps {
   collapsed: boolean;
 }
 
 const AppSidebar: React.FC<AppSidebarProps> = ({ collapsed }) => {
+  const { user } = useAppSelector((state) => state.auth);
   const { theme } = useTheme();
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const items = [
+  const menuItems: MenuItem[] = [
     {
       key: '/',
       icon: <DashboardOutlined />,
       label: 'Dashboard',
     },
     {
-      key: '/students',
-      icon: <UserOutlined />,
-      label: 'Học viên',
+      key: 'user-management',
+      label: 'Quản lý người dùng',
+      icon: <TeamOutlined />,
+      roles: [USER_ROLE.ADMIN, USER_ROLE.STAFF], // Chỉ admin và manager mới thấy menu này
+      children: [
+        {
+          key: '/accounts',
+          icon: <AuditOutlined />,
+          label: 'Tài khoản',
+        },
+        {
+          key: '/students',
+          icon: <UserOutlined />,
+          label: 'Học viên',
+        },
+        {
+          key: '/parents',
+          icon: <TeamOutlined />,
+          label: 'Phụ huynh',
+        },
+        {
+          key: '/teachers',
+          icon: <SolutionOutlined />,
+          label: 'Giáo viên',
+        },
+      ],
     },
     {
-      key: '/teachers',
-      icon: <UserOutlined />,
-      label: 'Giáo viên',
-    },
-    {
-      key: '/courses',
+      key: 'academic-management',
+      label: 'Quản lý đào tạo',
       icon: <BookOutlined />,
-      label: 'Khóa học',
+      children: [
+        {
+          key: '/rooms',
+          icon: <SolutionOutlined />,
+          label: 'Phòng học',
+        },
+        {
+          key: '/schedules',
+          icon: <ScheduleOutlined />,
+          label: 'Ca học',
+        },
+        {
+          key: '/courses',
+          icon: <ReadOutlined />,
+          label: 'Khóa đào tạo',
+        },
+        {
+          key: '/course-classes',
+          icon: <ReadOutlined />,
+          label: 'Lớp học',
+        },
+        {
+          key: '/enrollments',
+          icon: <SolutionOutlined />,
+          label: 'Tuyển sinh',
+        },
+        {
+          key: '/course-class-sessions',
+          icon: <CalendarOutlined />,
+          label: 'Lịch học',
+        },
+        {
+          key: '/calendar',
+          icon: <CalendarOutlined />,
+          label: 'Calendars',
+        },
+      ],
     },
     {
-      key: '/enrollments',
-      icon: <BookOutlined />,
-      label: 'Tuyển sinh',
+      key: 'finance',
+      label: 'Quản lý học phí',
+      icon: <WalletOutlined />,
+      children: [],
     },
   ];
+
+  const filterMenuByRole = (items: MenuItem[], role?: UserRole): MenuItem[] => {
+    return (
+      items
+        // Nếu item không có trường roles hoặc trường roles có chứa role của user thì giữ lại
+        .filter((item) => !item.roles || item.roles.includes(role!))
+        // Với các item có children, tiếp tục lọc children theo cùng logic
+        .map((item) => ({
+          ...item,
+          children: item.children ? filterMenuByRole(item.children, role) : undefined,
+        }))
+        // Sau khi lọc, loại bỏ các item có children nhưng không còn children nào sau khi lọc
+        .filter((item) => {
+          const isLeaf = !item.children;
+          const hasChildren = item.children?.length;
+
+          return isLeaf || hasChildren;
+        }) as MenuItem[]
+    );
+  };
 
   return (
     <Sider width={240} collapsed={collapsed}>
@@ -55,7 +151,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ collapsed }) => {
       <Menu
         theme={theme}
         mode="inline"
-        items={items}
+        items={filterMenuByRole(menuItems, user?.role)}
         selectedKeys={[location.pathname]}
         onClick={({ key }) => navigate(key)}
       />

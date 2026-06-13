@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { FormFieldType } from '@/shared/types/form-field-type';
-import type { SectionForm } from '../components/modal/ModalFormCustom';
 import { FORMAT_TIME } from '../constants/format-date';
 import { formatDateToPicker, formatTimeToPicker } from './date';
+import type { SectionForm } from '../components/modal/ModalFormCustom';
 
 export const formatFormValues = <T>(values: T, sections: SectionForm<T>[]): T => {
   const formattedValues: Record<string, unknown> = {

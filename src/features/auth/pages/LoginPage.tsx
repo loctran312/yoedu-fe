@@ -1,19 +1,13 @@
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-import { useNotification } from '@/shared/hooks/useNotification';
 import { Button, Form, Image } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginThunk } from '../store/auth-thunk';
-import CardCustom from '@/shared/components/card/CardCustom';
+import { useAppSelector, useAppDispatch } from '@/app/redux/hooks';
 import YoeduLogo from '@/assets/images/yoedu-logo.svg';
-import { loginFormFields } from '../constants/login-form-fields';
-import InputCustom from '@/shared/components/input/InputCustom';
-import InputPasswordCustom from '@/shared/components/input/InputPasswordCustom';
-import { FormFieldType } from '@/shared/types/form-field-type';
-
-type LoginFormValues = {
-  email: string;
-  password: string;
-};
+import CardCustom from '@/shared/components/card/CardCustom';
+import { loginFormFields } from '@/features/auth/constants/login-form-fields';
+import { loginThunk } from '@/features/auth/store/auth-thunk';
+import { useNotification } from '@/shared/hooks/useNotification';
+import DynamicForm from '@/shared/components/form/DynamicForm';
+import type { LoginPayload } from '../types/auth-type';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -21,9 +15,10 @@ const LoginPage = () => {
   const { showNotification } = useNotification();
 
   const navigate = useNavigate();
-  const [form] = Form.useForm<LoginFormValues>();
 
-  const onFinish = async (values: LoginFormValues) => {
+  const [form] = Form.useForm<LoginPayload>();
+
+  const onFinish = async (values: LoginPayload) => {
     try {
       await dispatch(
         loginThunk({
@@ -43,6 +38,7 @@ const LoginPage = () => {
       showNotification('error', 'Đăng nhập thất bại', error || 'Đã xảy ra lỗi. Vui lòng thử lại.');
     }
   };
+
   return (
     <CardCustom className="w-full max-w-md border-0 shadow-2xl">
       <div className="mx-auto flex h-24 w-24 items-center justify-center">
@@ -56,21 +52,7 @@ const LoginPage = () => {
       </div>
 
       <Form form={form} layout="vertical" autoComplete="off" onFinish={onFinish}>
-        {loginFormFields.map((field) => (
-          <Form.Item key={field.name} label={field.label} name={field.name} rules={field.rules}>
-            {(() => {
-              switch (field.type) {
-                case FormFieldType.InputPassword:
-                  return (
-                    <InputPasswordCustom placeholder={field.placeholder} prefix={<field.icon />} />
-                  );
-                case FormFieldType.Input:
-                default:
-                  return <InputCustom placeholder={field.placeholder} prefix={<field.icon />} />;
-              }
-            })()}
-          </Form.Item>
-        ))}
+        <DynamicForm<LoginPayload> fields={loginFormFields} />
 
         <div className="mb-6 flex items-center justify-end">
           <Link to="/auth/forgot-password" className="text-sm text-blue-600 hover:text-blue-500">

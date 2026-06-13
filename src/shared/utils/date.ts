@@ -38,8 +38,8 @@ export const formatDate = (value?: string | Date | null, format = FORMAT_DATE): 
 export const formatTimeToPicker = (
   value?: string | Date | null,
   format = FORMAT_TIME,
-): Dayjs | null => {
-  if (!value) return null;
+): Dayjs | string => {
+  if (!value) return '';
 
   return dayjs(value, format);
 };

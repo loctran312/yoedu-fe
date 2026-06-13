@@ -7,6 +7,7 @@ import LoginPage from '@/features/auth/pages/LoginPage';
 import RegisterPage from '@/features/auth/pages/RegisterPage';
 import AppInit from '../init/AppInit';
 import MainLayout from '../layouts/MainLayout';
+import DashboardPage from '@/features/dashboard/pages/DashboardPage';
 
 export const router = createBrowserRouter([
   /******************** AUTH *********************/
@@ -41,11 +42,11 @@ export const router = createBrowserRouter([
             <MainLayout />
           </AppInit>
         ),
-        // children: [
-        //   {
-        //     index: true,
-        //     element: <DashboardPage />,
-        //   },
+        children: [
+          {
+            index: true,
+            element: <DashboardPage />,
+          },
         //   {
         //     path: 'profile',
         //     element: <UserProfilePage />,
@@ -66,7 +67,7 @@ export const router = createBrowserRouter([
         //     path: 'enrollments',
         //     element: <EnrollmentPage />,
         //   },
-        // ],
+        ],
       },
     ],
   },

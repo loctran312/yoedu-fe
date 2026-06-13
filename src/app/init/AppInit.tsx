@@ -1,18 +1,20 @@
 import { useEffect } from 'react';
+import { useAppDispatch } from '@/app/redux/hooks';
 import { getMeThunk } from '@/features/auth/store/auth-thunk';
-import { useAppSelector, useAppDispatch } from '@/app/redux/hooks';
+import { markInitialized } from '@/features/auth/store/auth-slice';
 
 export default function AppInit({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
-  const { accessToken, user } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    if (accessToken) {
-      dispatch(getMeThunk());
-    }
-  }, [accessToken, dispatch]);
+    const token = localStorage.getItem('accessToken');
 
-  if (!user) return null;
+    if (token) {
+      dispatch(getMeThunk());
+    } else {
+      dispatch(markInitialized());
+    }
+  }, [dispatch]);
 
   return children;
 }

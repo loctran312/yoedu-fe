@@ -5,7 +5,6 @@ import AuthLayout from '../layouts/AuthLayout';
 import ProtectedRoute from './ProtectedRoute';
 import LoginPage from '@/features/auth/pages/LoginPage';
 import RegisterPage from '@/features/auth/pages/RegisterPage';
-import AppInit from '../init/AppInit';
 import MainLayout from '../layouts/MainLayout';
 import DashboardPage from '@/features/dashboard/pages/DashboardPage';
 
@@ -37,11 +36,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: (
-          <AppInit>
-            <MainLayout />
-          </AppInit>
-        ),
+        element: <MainLayout />,
         children: [
           {
             index: true,

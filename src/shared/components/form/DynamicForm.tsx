@@ -14,6 +14,7 @@ import InputTextAreaCustom from '../input/InputTextAreaCustom';
 import { FormFieldType } from '@/shared/types/form-field-type';
 import type { UserRole } from '@/features/users/types/user-role-type';
 import type { FormField } from '../modal/ModalFormCustom';
+import DateTimePickerCustom from '../datetimepicker/DateTimePickerCustom';
 
 interface DynamicFormProps<T> {
   fields: FormField<T>[];
@@ -27,99 +28,117 @@ const DynamicForm = <T,>({ fields, disabled, mode }: DynamicFormProps<T>) => {
 
   return (
     <RowCustom>
-      {fields.map((field) => (
-        <Col key={field.name as string} span={field.col || 12}>
-          <Form.Item name={field.name as string} label={field.label} rules={field.rules}>
-            {(() => {
-              const isDisabled =
-                typeof field.disabled === 'function'
-                  ? field.disabled({ role: user?.role as UserRole, mode })
-                  : field.disabled;
+      {fields
+        .filter((field) => {
+          const isHidden =
+            typeof field.hidden === 'function' ? field.hidden({ mode }) : field.hidden;
 
-              switch (field.type) {
-                case FormFieldType.Input:
-                  return (
-                    <InputCustom
-                      placeholder={field.placeholder}
-                      disabled={isDisabled || disabled}
-                      prefix={field.icon ? <field.icon /> : null}
-                      {...field.props}
-                    />
-                  );
-                case FormFieldType.InputPassword:
-                  return (
-                    <InputPasswordCustom
-                      placeholder={field.placeholder}
-                      disabled={isDisabled || disabled}
-                      prefix={field.icon ? <field.icon /> : null}
-                      {...field.props}
-                    />
-                  );
-                case FormFieldType.ImageUpload:
-                  return (
-                    <UploadImageCustom
-                      value={form.getFieldValue(field.name)}
-                      onChange={(value) => form.setFieldsValue({ [field.name]: value })}
-                      {...field.props}
-                    />
-                  );
-                case FormFieldType.InputNumber:
-                  return (
-                    <InputNumberCustom
-                      placeholder={field.placeholder}
-                      disabled={isDisabled || disabled}
-                      {...field.props}
-                    />
-                  );
-                case FormFieldType.Select:
-                  return (
-                    <SelectCustom
-                      placeholder={field.placeholder}
-                      options={field.options}
-                      disabled={isDisabled || disabled}
-                      {...field.props}
-                    />
-                  );
-                case FormFieldType.SelectFetch:
-                  return (
-                    <SelectFetchCustom
-                      placeholder={field.placeholder}
-                      fetchOptions={field.fetchOptions}
-                      disabled={isDisabled || disabled}
-                      {...field.props}
-                    />
-                  );
-                case FormFieldType.DatePicker:
-                  return (
-                    <DatePickerCustom
-                      placeholder={field.placeholder}
-                      disabled={isDisabled || disabled}
-                      {...field.props}
-                    />
-                  );
-                case FormFieldType.TimePicker:
-                  return (
-                    <TimePickerCustom
-                      placeholder={field.placeholder}
-                      disabled={isDisabled || disabled}
-                      {...field.props}
-                    />
-                  );
-                case FormFieldType.TextArea:
-                  return (
-                    <InputTextAreaCustom
-                      placeholder={field.placeholder}
-                      disabled={isDisabled || disabled}
-                      {...field.props}
-                    />
-                  );
-                default:
-                  return null;
-              }
-            })()}
-          </Form.Item>
-        </Col>
-      ))}
+          return !isHidden;
+        })
+        .map((field) => (
+          <Col key={field.name as string} span={field.col || 12}>
+            <Form.Item name={field.name as string} label={field.label} rules={field.rules}>
+              {(() => {
+                const isDisabled =
+                  typeof field.disabled === 'function'
+                    ? field.disabled({ role: user?.role as UserRole, mode })
+                    : field.disabled;
+
+                const fieldProps =
+                  typeof field.props === 'function' ? field.props(form) : field.props;
+
+                switch (field.type) {
+                  case FormFieldType.Input:
+                    return (
+                      <InputCustom
+                        placeholder={field.placeholder}
+                        disabled={isDisabled || disabled}
+                        prefix={field.icon ? <field.icon /> : null}
+                        {...fieldProps}
+                      />
+                    );
+                  case FormFieldType.InputPassword:
+                    return (
+                      <InputPasswordCustom
+                        placeholder={field.placeholder}
+                        disabled={isDisabled || disabled}
+                        prefix={field.icon ? <field.icon /> : null}
+                        {...fieldProps}
+                      />
+                    );
+                  case FormFieldType.ImageUpload:
+                    return (
+                      <UploadImageCustom
+                        value={form.getFieldValue(field.name)}
+                        onChange={(value) => form.setFieldsValue({ [field.name]: value })}
+                        {...fieldProps}
+                      />
+                    );
+                  case FormFieldType.InputNumber:
+                    return (
+                      <InputNumberCustom
+                        placeholder={field.placeholder}
+                        disabled={isDisabled || disabled}
+                        {...fieldProps}
+                      />
+                    );
+                  case FormFieldType.Select:
+                    return (
+                      <SelectCustom
+                        placeholder={field.placeholder}
+                        options={field.options}
+                        disabled={isDisabled || disabled}
+                        {...fieldProps}
+                      />
+                    );
+                  case FormFieldType.SelectFetch:
+                    return (
+                      <SelectFetchCustom
+                        placeholder={field.placeholder}
+                        fetchOptions={field.fetchOptions}
+                        disabled={isDisabled || disabled}
+                        {...fieldProps}
+                      />
+                    );
+                  case FormFieldType.DatePicker:
+                    return (
+                      <DatePickerCustom
+                        placeholder={field.placeholder}
+                        disabled={isDisabled || disabled}
+                        {...fieldProps}
+                      />
+                    );
+                  case FormFieldType.DateTimePicker:
+                    return (
+                      <DateTimePickerCustom
+                        placeholder={field.placeholder}
+                        disabled={isDisabled || disabled}
+                        {...fieldProps}
+                      />
+                    );
+                  case FormFieldType.TimePicker:
+                    return (
+                      <TimePickerCustom
+                        placeholder={field.placeholder}
+                        disabled={isDisabled || disabled}
+                        {...fieldProps}
+                      />
+                    );
+                  case FormFieldType.TextArea:
+                    return (
+                      <InputTextAreaCustom
+                        placeholder={field.placeholder}
+                        disabled={isDisabled || disabled}
+                        {...fieldProps}
+                      />
+                    );
+                  default:
+                    return null;
+                }
+              })()}
+            </Form.Item>
+          </Col>
+        ))}
     </RowCustom>
   );
 };

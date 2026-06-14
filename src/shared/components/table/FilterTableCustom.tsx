@@ -9,7 +9,13 @@ import SelectCustom from '../select/SelectCustom';
 import DatePickerCustom from '../datepicker/DatePickerCustom';
 import CardCustom from '../card/CardCustom';
 import SelectFetchCustom from '../select/SelectFetchCustom';
-import { formatDateToPicker, formatDateToQuery } from '@/shared/utils/date';
+import {
+  formatDateToPicker,
+  formatDateToQuery,
+  formatTimeToPicker,
+  formatTimeToQuery,
+} from '@/shared/utils/date';
+import TimePickerCustom from '../timepicker/TimePickerCustom';
 
 export interface DataFilter {
   name: string;
@@ -100,9 +106,19 @@ const FilterTableCustom = ({
                       return (
                         <DatePickerCustom
                           placeholder={filter.placeholder}
-                          value={formatDateToPicker(values[filter.name])}
+                          value={formatDateToPicker(values[filter.name]) as Dayjs}
                           onChange={(value) =>
                             handleChange(filter.name, formatDateToQuery(value as Dayjs))
+                          }
+                        />
+                      );
+                    case FormFieldType.TimePicker:
+                      return (
+                        <TimePickerCustom
+                          placeholder={filter.placeholder}
+                          value={formatTimeToPicker(values[filter.name]) as Dayjs}
+                          onChange={(value) =>
+                            handleChange(filter.name, formatTimeToQuery(value as Dayjs))
                           }
                         />
                       );

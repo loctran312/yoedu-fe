@@ -1,6 +1,57 @@
+import { useEffect, useState } from "react";
+import { dashboardRoleAdminApi } from "../api/dashboard-api";
+import type { Dashboard } from "../types/dashboard-type";
+import DashboardSkeleton from "../components/DashboardSkeleton";
+import PageHeader from "@/shared/components/page/PageHeader";
+import StatCard from "../components/StatCard";
+import RecentActivity from "../components/RecentActivity";
+import TodayClasses from "../components/TodayClasses";
+
+const mapColor = ['green', 'blue', 'purple', 'red'];
+
 const DashboardPage = () => {
+  const { getDashboard } = dashboardRoleAdminApi;
+  const [data, setData] = useState<Dashboard | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getDashboard();
+        setData(res.data);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <DashboardSkeleton />
+  }
   return (
-    <div>Dashboard</div>
+    <div className="flex flex-col gap-6">
+
+      <PageHeader title="Dashboard" subtitle="Tổng quan hệ thống quản lý YOEDU" />
+
+      <div className="grid grid-cols-4 gap-4">
+        {data?.statData.map((item, index) => (
+          <StatCard
+            key={index}
+            title={item.title}
+            value={item.value}
+            extra={item.extra}
+            color={mapColor[index % mapColor.length]}
+          />
+        ))}
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <RecentActivity data={data?.recentActivityData || []} />
+        <TodayClasses data={data?.todayClasses || []} />
+      </div>
+    </div>
   )
 }
 

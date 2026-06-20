@@ -1,5 +1,9 @@
-import type { UserRole } from "./user-role-type";
-import type { UserStatusType } from "./user-status-type";
+// import type { Student } from '@/features/students/types/student-type';
+import type { UserStatusType } from '@/features/users/types/user-status-type';
+import type { UserRole } from '@/features/users/types/user-role-type';
+import type { UserGenderType } from '@/features/users/types/user-gender-type';
+// import type { Teacher } from '@/features/teachers/types/teacher-type';
+// import type { Parent } from '@/features/parents/types/parent-type';
 
 export type User = {
   id: string;
@@ -9,10 +13,11 @@ export type User = {
   phone?: string | null;
   address?: string | null;
   avatarUrl?: string | null;
+  gender?: UserGenderType | null;
   dateOfBirth?: string | null;
+  lastLoginAt?: string | null;
   role: UserRole;
   status: UserStatusType;
-  lastLoginAt?: string;
   createdAt: string;
   updatedAt: string;
   student?: null;

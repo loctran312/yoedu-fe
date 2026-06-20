@@ -3,7 +3,7 @@ export const USER_STATUS = {
 
     INACTIVE: 'INACTIVE',
 
-    DELETE: 'DELETED',
+    DELETED: 'DELETED',
 } as const;
 
 export type UserStatusType = (typeof USER_STATUS)[keyof typeof USER_STATUS];

@@ -40,6 +40,8 @@ export interface FormField<T> {
   props?: any;
 
   icon?: any;
+
+  onChange?: (value: any, options: any, form: any) => void;
 }
 
 export interface SectionForm<T> {

@@ -7,6 +7,7 @@ import LoginPage from '@/features/auth/pages/LoginPage';
 import RegisterPage from '@/features/auth/pages/RegisterPage';
 import MainLayout from '../layouts/MainLayout';
 import DashboardPage from '@/features/dashboard/pages/DashboardPage';
+import UserPage from '@/features/users/pages/UserPage';
 
 export const router = createBrowserRouter([
   /******************** AUTH *********************/
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <DashboardPage />,
+          },
+          {
+            path: 'accounts',
+            element: <UserPage />,
           },
         //   {
         //     path: 'profile',

@@ -9,12 +9,12 @@ import ProtectedRoute from './ProtectedRoute';
 import LoginPage from '@/features/auth/pages/LoginPage';
 import RegisterPage from '@/features/auth/pages/RegisterPage';
 import DashboardPage from '@/features/dashboard/pages/DashboardPage';
-// import StudentPage from '@/features/students/pages/StudentPage';
+import StudentPage from '@/features/students/pages/StudentPage';
 import UserProfilePage from '@/features/users/pages/UserProfilePage';
-// import TeacherPage from '@/features/teachers/pages/TeacherPage';
-// import CoursePage from '@/features/courses/pages/CoursePage';
+import TeacherPage from '@/features/teachers/pages/TeacherPage';
+import CoursePage from '@/features/courses/pages/CoursePage';
 // import EnrollmentPage from '@/features/enrollments/pages/EnrollmentPage';
-// import ParentPage from '@/features/parents/pages/ParentPage';
+import ParentPage from '@/features/parents/pages/ParentPage';
 import UserPage from '@/features/users/pages/UserPage';
 // import RoomPage from '@/features/rooms/pages/RoomPage';
 // import SchedulePage from '@/features/schedule/pages/SchedulePage';
@@ -66,15 +66,15 @@ export const router = createBrowserRouter([
           },
           {
             path: 'students',
-            // element: <StudentPage />,
+            element: <StudentPage />,
           },
           {
             path: 'teachers',
-            // element: <TeacherPage />,
+            element: <TeacherPage />,
           },
           {
             path: 'parents',
-            // element: <ParentPage />,
+            element: <ParentPage />,
           },
           {
             path: 'accounts',
@@ -82,7 +82,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'courses',
-            // element: <CoursePage />,
+            element: <CoursePage />,
           },
           {
             path: 'rooms',

@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { getMeThunk, loginThunk, registerThunk } from './auth-thunk';
 import type { User } from '@/features/users/types/user-type';
 
 type AuthState = {
   user: User | null;
-  initialized: boolean;
+  initialized: boolean; // Dùng để đánh dấu đã kiểm tra token và lấy thông tin user hay chưa
   loading: boolean;
   error: string | null;
 };

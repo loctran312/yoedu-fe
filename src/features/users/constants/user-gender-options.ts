@@ -1,4 +1,4 @@
-import { USER_GENDER } from "../types/user-gender-type";
+import { USER_GENDER } from '@/features/users/types/user-gender-type';
 
 export const userGenderOptions = [
   {

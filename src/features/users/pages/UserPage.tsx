@@ -1,48 +1,62 @@
-import PageHeader from '@/shared/components/page/PageHeader';
-import FilterTableCustom from '@/shared/components/table/FilterTableCustom';
-import { userFilters } from '../constants/user-filter-table';
-import { userRoleAdminApi } from '../api/user-api';
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-import { useFormModal } from '@/shared/hooks/useFormModal';
-import type { User } from '../types/user-type';
 import useTable from '@/shared/hooks/useTable';
-import type { UserFilterParams } from '../types/user-filter-params-type';
-import type { SectionForm } from '@/shared/components/modal/ModalFormCustom';
-import { generalInfoFormFields } from '../constants/general-info-form-fields';
+import PageHeader from '@/shared/components/page/PageHeader';
+import ModalFormCustom from '@/shared/components/modal/ModalFormCustom';
+import { useFormModal } from '@/shared/hooks/useFormModal';
+import { FormModalMode } from '@/shared/types/form-modal-mode-type';
+import FilterTableCustom from '@/shared/components/table/FilterTableCustom';
+import { generalInfoFormFields } from '@/features/users/constants/general-info-form-fields';
+import ActionGroup from '@/shared/components/table/ActionGroup';
 import {
+  EyeOutlined,
+  EditOutlined,
+  DeleteOutlined,
   CheckOutlined,
   CloseOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  EyeOutlined,
 } from '@ant-design/icons';
-import { USER_STATUS } from '../types/user-status-type';
-import ActionGroup from '@/shared/components/table/ActionGroup';
-import StatusTag from '@/shared/components/status/StatusTag';
-import { FORMAT_DATE_TIME } from '@/shared/constants/format-date';
-import { formatDate } from '@/shared/utils/date';
 import TablePaginationCustom from '@/shared/components/table/TablePaginationCustom';
-import ModalFormCustom from '@/shared/components/modal/ModalFormCustom';
-import { FormModalMode } from '@/shared/types/form-modal-mode-type';
+
+import type { SectionForm } from '@/shared/components/modal/ModalFormCustom';
+import type { User } from '../types/user-type';
+import { userRoleAdminApi } from '../api/user-api';
+import StatusTag from '../components/StatusTag';
+import { USER_STATUS } from '../types/user-status-type';
+import type { UserFilterParams } from '../types/user-filter-params-type';
+import { userFilters } from '../constants/user-filter-table';
+import { formatDate } from '@/shared/utils/date';
+import { FORMAT_DATE_TIME } from '@/shared/constants/format-date';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { getMeThunk } from '@/features/auth/store/auth-thunk';
 
 const UserPage = () => {
   const { getAll, update, active, inActive, remove } = userRoleAdminApi;
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+
   const { open, mode, selectedRecord, openView, openEdit, close } = useFormModal<User>();
+
   const {
     data: users,
+
     loading,
+
     pagination,
+
     filterValues,
+
     handleFilterChange,
+
     handleFilterSubmit,
+
     handleFilterReset,
+
     handleChangePage,
+
     handleDelete,
+
     handleActive,
+
     handleInActive,
+
     refetch,
   } = useTable<User, UserFilterParams>({
     fetchApi: getAll,
@@ -51,7 +65,7 @@ const UserPage = () => {
     inActiveApi: inActive,
   });
 
-  const sectionsUserForm: SectionForm<User>[] = [
+  const sectionsUserForm: SectionForm[] = [
     {
       key: 'general',
       label: 'Thông tin chung',
@@ -181,42 +195,42 @@ const UserPage = () => {
     <div className="flex flex-col h-full">
       <PageHeader title="Quản lý tài khoản" subtitle="Danh sách tài khoản" />
 
-      <div className="flex-1 flex flex-col gap-4">
+      <div className="mb-4">
         <FilterTableCustom
-                dataFilters={userFilters}
-                values={filterValues}
-                onChange={handleFilterChange}
-                onReset={handleFilterReset}
-                onSubmit={handleFilterSubmit}
-            />
-
-            <TablePaginationCustom<User>
-                columns={columns}
-                data={users}
-                loading={loading}
-                pagination={pagination}
-                onChangePage={handleChangePage}
-            />
-
-            <ModalFormCustom<User>
-            open={open}
-            title="Học Viên"
-            mode={mode}
-            initialValues={selectedRecord}
-            disabled={mode === FormModalMode.VIEW}
-            onCancel={close}
-            onSuccess={() => {
-            refetch();
-            if (mode === FormModalMode.EDIT && selectedRecord?.id === user?.id) {
-                dispatch(getMeThunk());
-            }
-            }}
-            onSubmit={
-            mode === FormModalMode.CREATE ? undefined : (values) => update(selectedRecord!.id, values)
-            }
-            sections={sectionsUserForm}
+          dataFilters={userFilters}
+          values={filterValues}
+          onChange={handleFilterChange}
+          onReset={handleFilterReset}
+          onSubmit={handleFilterSubmit}
         />
       </div>
+
+      <TablePaginationCustom<User>
+        columns={columns}
+        data={users}
+        loading={loading}
+        pagination={pagination}
+        onChangePage={handleChangePage}
+      />
+
+      <ModalFormCustom<User>
+        open={open}
+        title="Học Viên"
+        mode={mode}
+        initialValues={selectedRecord}
+        disabled={mode === FormModalMode.VIEW}
+        onCancel={close}
+        onSuccess={() => {
+          refetch();
+          if (mode === FormModalMode.EDIT && selectedRecord?.id === user?.id) {
+            dispatch(getMeThunk());
+          }
+        }}
+        onSubmit={
+          mode === FormModalMode.CREATE ? undefined : (values) => update(selectedRecord!.id, values)
+        }
+        sections={sectionsUserForm}
+      />
     </div>
   );
 };

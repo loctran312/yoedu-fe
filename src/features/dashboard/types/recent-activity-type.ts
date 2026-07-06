@@ -1,4 +1,4 @@
-import type { ActivityType } from "../constants/activity";
+import { ActivityType } from '@/features/dashboard/constants/activity';
 
 export type RecentActivityItem = {
   type: (typeof ActivityType)[keyof typeof ActivityType];

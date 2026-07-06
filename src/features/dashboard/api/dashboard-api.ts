@@ -1,9 +1,9 @@
-import { axiosClient } from "@/shared/lib/axios"
+import { axiosClient } from '@/shared/lib/axios';
 
 export const dashboardRoleAdminApi = {
-    getDashboard: async () => {
-        const res = await axiosClient.get("/dashboard");
+  getDashboard: async () => {
+    const res = await axiosClient.get('/dashboard');
 
-        return res.data;
-    },
+    return res.data;
+  },
 };

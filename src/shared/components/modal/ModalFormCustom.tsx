@@ -3,7 +3,7 @@ import { FormModalMode, type FormModalModeType } from '../../types/form-modal-mo
 import ModalCustom from './ModalCustom';
 import { useNotification } from '@/shared/hooks/useNotification';
 import { Button, Form, Tabs } from 'antd';
-import { formatFormValues } from '@/shared/utils/form';
+import { formatSectionFieldsFormValues } from '@/shared/utils/form';
 import DynamicForm from '../form/DynamicForm';
 import type { UserRole } from '@/features/users/types/user-role-type';
 import type { FormFieldTypeKey } from '@/shared/types/form-field-type';
@@ -44,10 +44,12 @@ export interface FormField<T> {
   onChange?: (value: any, options: any, form: any) => void;
 }
 
-export interface SectionForm<T> {
+export interface SectionForm {
   key: string;
   label: string;
-  fields: FormField<T>[];
+  isDisabled?: boolean; // Chỉ dùng để disable toàn bộ section, không phụ thuộc vào từng field (Dùng cho trường hợp muốn sử dụng section này ở Pages khác)
+  isHidden?: boolean | ((dataForm: { dataForm: any }) => boolean);
+  fields: FormField<any>[];
 }
 
 interface ModalFormCustomProps<T> {
@@ -61,7 +63,7 @@ interface ModalFormCustomProps<T> {
 
   loading?: boolean;
 
-  sections: SectionForm<T>[];
+  sections: SectionForm[];
 
   disabled?: boolean;
 
@@ -84,6 +86,8 @@ const ModalFormCustom = <T,>({
   disabled,
 }: ModalFormCustomProps<T>) => {
   const [form] = Form.useForm();
+  const dataForm = Form.useWatch([], form);
+
   const [loading, setLoading] = useState(false);
   const { showNotification } = useNotification();
 
@@ -94,7 +98,7 @@ const ModalFormCustom = <T,>({
     }
 
     if (initialValues) {
-      const formattedValues = formatFormValues(initialValues as T, sections);
+      const formattedValues = formatSectionFieldsFormValues(initialValues as T, sections);
 
       form.setFieldsValue(formattedValues);
     }
@@ -104,7 +108,7 @@ const ModalFormCustom = <T,>({
     try {
       setLoading(true);
 
-      const formattedValues = formatFormValues(values, sections);
+      const formattedValues = formatSectionFieldsFormValues(values, sections);
 
       if (onSubmit) {
         await onSubmit(formattedValues);
@@ -143,11 +147,26 @@ const ModalFormCustom = <T,>({
     >
       <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Tabs
-          items={sections.map((section) => ({
-            key: section.key,
-            label: section.label,
-            children: <DynamicForm<T> fields={section.fields} disabled={disabled} mode={mode} />,
-          }))}
+          items={sections
+            .filter((section) => {
+              const isHidden =
+                typeof section.isHidden === 'function'
+                  ? section.isHidden({ dataForm })
+                  : section.isHidden;
+
+              return !isHidden;
+            })
+            .map((section) => ({
+              key: section.key,
+              label: section.label,
+              children: (
+                <DynamicForm<T>
+                  fields={section.fields}
+                  disabled={section.isDisabled || disabled}
+                  mode={mode}
+                />
+              ),
+            }))}
         />
 
         <div className="flex justify-end gap-2">

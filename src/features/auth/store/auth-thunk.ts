@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import { loginApi, registerApi } from '../api/auth-api';
 import type { LoginPayload, RegisterPayload } from '../types/auth-type';
 import { userRoleUserApi } from '@/features/users/api/user-api';

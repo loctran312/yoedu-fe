@@ -1,9 +1,9 @@
 export const USER_STATUS = {
-    ACTIVE: 'ACTIVE',
+  ACTIVE: 'ACTIVE',
 
-    INACTIVE: 'INACTIVE',
+  INACTIVE: 'INACTIVE',
 
-    DELETED: 'DELETED',
+  DELETED: 'DELETED',
 } as const;
 
 export type UserStatusType = (typeof USER_STATUS)[keyof typeof USER_STATUS];

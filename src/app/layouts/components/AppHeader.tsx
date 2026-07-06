@@ -14,6 +14,9 @@ import { logout } from '@/features/auth/store/auth-slice';
 import { useTheme } from '@/app/providers/theme/hooks/useTheme';
 import { useNavigate } from 'react-router-dom';
 import UserAvatar from '@/shared/components/avatar/UserAvatar';
+import { useState } from 'react';
+import { useUnreadCount } from '@/features/notification/hooks/useUnreadCount';
+import NotificationDrawer from '@/features/notification/components/NotificationDrawer';
 
 const { Header } = Layout;
 
@@ -27,6 +30,10 @@ const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, setCollapsed }) => {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const { data: unread } = useUnreadCount(user?.id);
+
+  const [openNotification, setOpenNotification] = useState(false);
 
   const menuItems = [
     {
@@ -64,8 +71,11 @@ const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, setCollapsed }) => {
       {/* RIGHT */}
       <div className="flex items-center gap-6">
         {/* Notification */}
-        <Badge count={5} size="small">
-          <BellOutlined className="text-lg cursor-pointer" />
+        <Badge count={unread || 0} size="small">
+          <BellOutlined
+            className="text-lg cursor-pointer"
+            onClick={() => setOpenNotification(true)}
+          />
         </Badge>
 
         {/* Theme switch */}
@@ -89,6 +99,12 @@ const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, setCollapsed }) => {
             </div>
           </div>
         </Dropdown>
+
+        <NotificationDrawer
+          open={openNotification}
+          onClose={() => setOpenNotification(false)}
+          userId={user?.id}
+        />
       </div>
     </Header>
   );

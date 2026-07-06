@@ -14,7 +14,6 @@ import {
 } from '@ant-design/icons';
 import YoeduLogo from '@/assets/images/yoedu-logo.svg';
 import { useTheme } from '@/app/providers/theme/hooks/useTheme';
-
 import { USER_ROLE, type UserRole } from '@/features/users/types/user-role-type';
 import { useAppSelector } from '@/app/redux/hooks';
 
@@ -79,16 +78,19 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ collapsed }) => {
           key: '/rooms',
           icon: <SolutionOutlined />,
           label: 'Phòng học',
+          roles: [USER_ROLE.ADMIN, USER_ROLE.STAFF],
         },
         {
           key: '/schedules',
           icon: <ScheduleOutlined />,
           label: 'Ca học',
+          roles: [USER_ROLE.ADMIN, USER_ROLE.STAFF],
         },
         {
           key: '/courses',
           icon: <ReadOutlined />,
           label: 'Khóa đào tạo',
+          roles: [USER_ROLE.ADMIN, USER_ROLE.STAFF],
         },
         {
           key: '/course-classes',
@@ -110,13 +112,35 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ collapsed }) => {
           icon: <CalendarOutlined />,
           label: 'Calendars',
         },
+        {
+          key: '/leave-requests',
+          icon: <AuditOutlined />,
+          label: 'Đơn xin nghỉ',
+        },
       ],
     },
     {
       key: 'finance',
       label: 'Quản lý học phí',
       icon: <WalletOutlined />,
-      children: [],
+      roles: [USER_ROLE.ADMIN, USER_ROLE.STAFF], // Chỉ admin và manager mới thấy menu này
+      children: [
+        {
+          key: '/promotions',
+          icon: <WalletOutlined />,
+          label: 'Chương trình khuyến mãi',
+        },
+        {
+          key: '/tuition-invoices',
+          icon: <WalletOutlined />,
+          label: 'Hóa đơn học phí',
+        },
+        {
+          key: '/payments',
+          icon: <WalletOutlined />,
+          label: 'Thanh toán',
+        },
+      ],
     },
   ];
 

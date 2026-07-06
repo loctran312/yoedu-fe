@@ -2,12 +2,29 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import AuthLayout from '../layouts/AuthLayout';
 
+import MainLayout from '@/app/layouts/MainLayout';
+
 import ProtectedRoute from './ProtectedRoute';
+
 import LoginPage from '@/features/auth/pages/LoginPage';
 import RegisterPage from '@/features/auth/pages/RegisterPage';
-import MainLayout from '../layouts/MainLayout';
 import DashboardPage from '@/features/dashboard/pages/DashboardPage';
+// import StudentPage from '@/features/students/pages/StudentPage';
+import UserProfilePage from '@/features/users/pages/UserProfilePage';
+// import TeacherPage from '@/features/teachers/pages/TeacherPage';
+// import CoursePage from '@/features/courses/pages/CoursePage';
+// import EnrollmentPage from '@/features/enrollments/pages/EnrollmentPage';
+// import ParentPage from '@/features/parents/pages/ParentPage';
 import UserPage from '@/features/users/pages/UserPage';
+// import RoomPage from '@/features/rooms/pages/RoomPage';
+// import SchedulePage from '@/features/schedule/pages/SchedulePage';
+// import CourseClassPage from '@/features/course-class/pages/CourseClassPage';
+// import CourseClassSessionPage from '@/features/course-class-session/pages/CourseClassSessionPage';
+// import CourseClassCalendarPage from '@/features/course-class-session/pages/CourseClassCalendarPage';
+// import LeaveRequestPage from '@/features/leave-request/pages/LeaveRequestPage';
+// import TuitionInvoicePage from '@/features/tuition-invoice/pages/TuitionInvoicePage';
+// import PromotionPage from '@/features/promotion/pages/PromotionPage';
+// import PaymentPage from '@/features/payment/pages/PaymentPage';
 
 export const router = createBrowserRouter([
   /******************** AUTH *********************/
@@ -44,29 +61,69 @@ export const router = createBrowserRouter([
             element: <DashboardPage />,
           },
           {
+            path: 'profile',
+            element: <UserProfilePage />,
+          },
+          {
+            path: 'students',
+            // element: <StudentPage />,
+          },
+          {
+            path: 'teachers',
+            // element: <TeacherPage />,
+          },
+          {
+            path: 'parents',
+            // element: <ParentPage />,
+          },
+          {
             path: 'accounts',
             element: <UserPage />,
           },
-        //   {
-        //     path: 'profile',
-        //     element: <UserProfilePage />,
-        //   },
-        //   {
-        //     path: 'students',
-        //     element: <StudentPage />,
-        //   },
-        //   {
-        //     path: 'teachers',
-        //     element: <TeacherPage />,
-        //   },
-        //   {
-        //     path: 'courses',
-        //     element: <CoursePage />,
-        //   },
-        //   {
-        //     path: 'enrollments',
-        //     element: <EnrollmentPage />,
-        //   },
+          {
+            path: 'courses',
+            // element: <CoursePage />,
+          },
+          {
+            path: 'rooms',
+            // element: <RoomPage />,
+          },
+          {
+            path: 'schedules',
+            // element: <SchedulePage />,
+          },
+          {
+            path: 'course-classes',
+            // element: <CourseClassPage />,
+          },
+          {
+            path: 'course-class-sessions',
+            // element: <CourseClassSessionPage />,
+          },
+          {
+            path: 'calendar',
+            // element: <CourseClassCalendarPage />,
+          },
+          {
+            path: 'enrollments',
+            // element: <EnrollmentPage />,
+          },
+          {
+            path: 'leave-requests',
+            // element: <LeaveRequestPage />,
+          },
+          {
+            path: 'tuition-invoices',
+            // element: <TuitionInvoicePage />,
+          },
+          {
+            path: 'payments',
+            // element: <PaymentPage />,
+          },
+          {
+            path: 'promotions',
+            // element: <PromotionPage />,
+          },
         ],
       },
     ],

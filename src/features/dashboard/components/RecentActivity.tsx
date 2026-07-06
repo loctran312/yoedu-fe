@@ -1,12 +1,12 @@
-import { ClockCircleOutlined, UserOutlined } from '@ant-design/icons';
-import { ActivityType } from '../constants/activity';
-import type { RecentActivityItem } from '../types/recent-activity-type';
-import CardCustom from '@/shared/components/card/CardCustom';
-import { formatRelativeTime } from '@/shared/utils/date';
-import EmptyCustom from '@/shared/components/empty/EmptyCustom';
 import { Timeline } from 'antd';
+import EmptyCustom from '@/shared/components/empty/EmptyCustom';
+import { UserOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import CardCustom from '@/shared/components/card/CardCustom';
+import { ActivityType } from '@/features/dashboard/constants/activity';
+import type { RecentActivityItem } from '@/features/dashboard/types/recent-activity-type';
+import { formatRelativeTime } from '@/shared/utils/date';
 
-interface RecenActivityProps {
+interface RecentActivityProps {
   data: RecentActivityItem[];
 }
 
@@ -29,7 +29,7 @@ const activityConfig = {
   },
 };
 
-const RecentActivity: React.FC<RecenActivityProps> = ({ data }) => {
+const RecentActivity: React.FC<RecentActivityProps> = ({ data }) => {
   return (
     <CardCustom title="Hoạt động gần đây">
       {data && data.length > 0 ? (

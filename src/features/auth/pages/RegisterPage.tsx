@@ -1,7 +1,11 @@
 import { Button, Form, Image } from 'antd';
+
 import { Link, useNavigate } from 'react-router-dom';
+
 import YoeduLogo from '@/assets/images/yoedu-logo.svg';
+
 import CardCustom from '@/shared/components/card/CardCustom';
+
 import { useAppSelector, useAppDispatch } from '@/app/redux/hooks';
 import { registerThunk } from '@/features/auth/store/auth-thunk';
 import { registerFormFields } from '@/features/auth/constants/register-form-fields';

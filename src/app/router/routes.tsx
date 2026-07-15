@@ -21,7 +21,7 @@ import SchedulePage from '@/features/schedule/pages/SchedulePage';
 import CourseClassPage from '@/features/course-class/pages/CourseClassPage';
 import CourseClassSessionPage from '@/features/course-class-session/pages/CourseClassSessionPage';
 import CourseClassCalendarPage from '@/features/course-class-session/pages/CourseClassCalendarPage';
-// import LeaveRequestPage from '@/features/leave-request/pages/LeaveRequestPage';
+import LeaveRequestPage from '@/features/leave-request/pages/LeaveRequestPage';
 // import TuitionInvoicePage from '@/features/tuition-invoice/pages/TuitionInvoicePage';
 // import PromotionPage from '@/features/promotion/pages/PromotionPage';
 // import PaymentPage from '@/features/payment/pages/PaymentPage';
@@ -110,7 +110,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'leave-requests',
-            // element: <LeaveRequestPage />,
+            element: <LeaveRequestPage />,
           },
           {
             path: 'tuition-invoices',

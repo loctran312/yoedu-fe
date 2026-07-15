@@ -16,7 +16,7 @@ import CoursePage from '@/features/courses/pages/CoursePage';
 // import EnrollmentPage from '@/features/enrollments/pages/EnrollmentPage';
 import ParentPage from '@/features/parents/pages/ParentPage';
 import UserPage from '@/features/users/pages/UserPage';
-// import RoomPage from '@/features/rooms/pages/RoomPage';
+import RoomPage from '@/features/rooms/pages/RoomPage';
 // import SchedulePage from '@/features/schedule/pages/SchedulePage';
 // import CourseClassPage from '@/features/course-class/pages/CourseClassPage';
 // import CourseClassSessionPage from '@/features/course-class-session/pages/CourseClassSessionPage';
@@ -86,7 +86,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'rooms',
-            // element: <RoomPage />,
+            element: <RoomPage />,
           },
           {
             path: 'schedules',

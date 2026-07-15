@@ -13,7 +13,7 @@ import StudentPage from '@/features/students/pages/StudentPage';
 import UserProfilePage from '@/features/users/pages/UserProfilePage';
 import TeacherPage from '@/features/teachers/pages/TeacherPage';
 import CoursePage from '@/features/courses/pages/CoursePage';
-// import EnrollmentPage from '@/features/enrollments/pages/EnrollmentPage';
+import EnrollmentPage from '@/features/enrollments/pages/EnrollmentPage';
 import ParentPage from '@/features/parents/pages/ParentPage';
 import UserPage from '@/features/users/pages/UserPage';
 import RoomPage from '@/features/rooms/pages/RoomPage';
@@ -106,7 +106,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'enrollments',
-            // element: <EnrollmentPage />,
+            element: <EnrollmentPage />,
           },
           {
             path: 'leave-requests',

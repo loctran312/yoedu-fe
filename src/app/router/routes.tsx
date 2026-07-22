@@ -23,7 +23,7 @@ import CourseClassSessionPage from '@/features/course-class-session/pages/Course
 import CourseClassCalendarPage from '@/features/course-class-session/pages/CourseClassCalendarPage';
 import LeaveRequestPage from '@/features/leave-request/pages/LeaveRequestPage';
 // import TuitionInvoicePage from '@/features/tuition-invoice/pages/TuitionInvoicePage';
-// import PromotionPage from '@/features/promotion/pages/PromotionPage';
+import PromotionPage from '@/features/promotion/pages/PromotionPage';
 // import PaymentPage from '@/features/payment/pages/PaymentPage';
 
 export const router = createBrowserRouter([
@@ -122,7 +122,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'promotions',
-            // element: <PromotionPage />,
+            element: <PromotionPage />,
           },
         ],
       },
